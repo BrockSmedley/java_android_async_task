@@ -8,11 +8,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    //view instances
     TextView textView;
     Button button;
+
+    //logic vars
     int counter;
     int duration = 3000; //in millis
     int interval = 1000; //1 second intervals
+
+    //task vars
     TimerAsyncTask task = null;
     Boolean isTaskRunning = false;
 
@@ -25,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView)findViewById(R.id.textView1);
     }
 
+    /*
+    AsyncTask that counts down from 3
+     */
     private class TimerAsyncTask extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... voids) {
@@ -42,13 +50,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            //set timer
             counter = duration;
+            //update UI
             textView.setText(toString().valueOf(counter/interval));
         }
 
         @Override
         protected void onPostExecute(String s) {
+            //display success message
             textView.setText(s);
+            //stop timer... in a way
             isTaskRunning = false;
         }
 
@@ -59,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClick(View view){
+        //run timer if not already running
         if (task == null || !isTaskRunning) {
             isTaskRunning = true;
             task = new TimerAsyncTask();
