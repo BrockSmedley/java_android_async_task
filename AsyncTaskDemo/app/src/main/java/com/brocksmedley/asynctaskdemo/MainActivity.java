@@ -25,16 +25,16 @@ public class MainActivity extends AppCompatActivity {
         textView = (TextView)findViewById(R.id.textView1);
     }
 
-    private class TimerAsyncTask extends AsyncTask<String, Integer, String> {
+    private class TimerAsyncTask extends AsyncTask<Void, Void, String> {
         @Override
-        protected String doInBackground(String[] params) {
+        protected String doInBackground(Void... voids) {
             while (counter > 0) {
                 try {
                     Thread.sleep(interval);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                publishProgress(counter);
+                publishProgress();
                 counter -= interval;
             }
             return "success";
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... progress){
+        protected void onProgressUpdate(Void... voids){ //not sure why I need to add "voids" but OK
             textView.setText(toString().valueOf(counter/interval));
         }
     }
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if (task == null || !isTaskRunning) {
             isTaskRunning = true;
             task = new TimerAsyncTask();
-            task.execute(new String[]{});
+            task.execute();
         }
     }
 }
